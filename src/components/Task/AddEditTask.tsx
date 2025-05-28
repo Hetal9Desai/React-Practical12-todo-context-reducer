@@ -4,8 +4,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { v4 as uuidv4 } from "uuid";
-import { type Task, TaskStatus } from "../../types/Task/types";
+import { TaskStatus } from "../../types/Task/types";
 import { useTaskContext } from "./TaskProvider";
+import { useTheme } from "../Navbar/ThemeContext";
+import "/src/components/Task/darkModeStyle.css";
 
 const taskSchema = z.object({
   id: z.string().uuid().optional().or(z.literal("")),
@@ -16,9 +18,10 @@ const taskSchema = z.object({
 type TaskFormData = z.infer<typeof taskSchema>;
 
 const AddEditTask: React.FC = () => {
-  const { tasks, setTasks } = useTaskContext();
+  const { tasks, dispatch } = useTaskContext();
   const navigate = useNavigate();
   const { taskId } = useParams<{ taskId: string }>();
+  const { darkMode } = useTheme();
 
   const {
     register,
@@ -45,26 +48,24 @@ const AddEditTask: React.FC = () => {
   }, [taskId, tasks, reset]);
 
   const onSubmit = (data: TaskFormData) => {
-    const taskData = tasks?.find((task) => task.id === taskId);
-    let allTasks = tasks ? [...tasks] : [];
-
-    if (taskData) {
-      const index = allTasks.findIndex((task) => task.id === taskId);
-      if (index !== -1) {
-        allTasks[index] = { ...allTasks[index], ...data };
-      }
+    if (taskId) {
+      dispatch({
+        type: "UPDATE_TASK",
+        payload: { ...data, id: taskId },
+      });
     } else {
-      const newTask: Task = { ...data, id: uuidv4() };
-      allTasks = [...allTasks, newTask];
+      dispatch({
+        type: "ADD_TASK",
+        payload: { ...data, id: uuidv4() },
+      });
     }
 
-    setTasks(allTasks);
     navigate("/");
   };
 
   return (
-    <div className="container mt-5">
-      <div className="card shadow-sm">
+    <div className={`container mt-5 ${darkMode ? "dark-mode" : ""}`}>
+      <div className={`card shadow-sm ${darkMode ? "bg-dark text-white" : ""}`}>
         <div className="card-body">
           <h2 className="card-title mb-4 text-center">
             {taskId ? "Update Task" : "Add Task"}
@@ -79,7 +80,9 @@ const AddEditTask: React.FC = () => {
             <div className="col-12">
               <input
                 type="text"
-                className="form-control"
+                className={`form-control ${
+                  darkMode ? "bg-dark text-white border-secondary" : ""
+                }`}
                 placeholder="Title"
                 {...register("title")}
               />
@@ -90,7 +93,9 @@ const AddEditTask: React.FC = () => {
 
             <div className="col-12">
               <textarea
-                className="form-control"
+                className={`form-control ${
+                  darkMode ? "bg-dark text-white border-secondary" : ""
+                }`}
                 placeholder="Description"
                 rows={4}
                 {...register("desc")}
@@ -101,7 +106,12 @@ const AddEditTask: React.FC = () => {
             </div>
 
             <div className="col-12">
-              <select className="form-select" {...register("status")}>
+              <select
+                className={`form-select ${
+                  darkMode ? "bg-dark text-white border-secondary" : ""
+                }`}
+                {...register("status")}
+              >
                 <option value={TaskStatus.TODO}>To Do</option>
                 <option value={TaskStatus.IN_PROGRESS} disabled={!taskId}>
                   In Progress
