@@ -3,7 +3,7 @@ import React, {
   useContext,
   useState,
   type ReactNode,
-} from 'react';
+} from "react";
 
 type ThemeContextType = {
   darkMode: boolean;
@@ -28,10 +28,11 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => {
   const ctx = useContext(ThemeContext);
   if (!ctx) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+    throw new Error("useTheme must be used within a ThemeProvider");
   }
   return ctx;
 };

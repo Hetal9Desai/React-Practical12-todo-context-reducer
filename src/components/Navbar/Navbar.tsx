@@ -1,14 +1,22 @@
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { useTheme } from "./ThemeContext";
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
+  const { darkMode, toggleDarkMode } = useTheme();
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav
+      className={`navbar navbar-expand-lg navbar-dark bg-dark ${
+        darkMode ? "navbar-dark bg-dark" : "navbar-light bg-light"
+      }`}
+    >
       <div className="container-fluid">
         <NavLink
           to="/"
           end
           className={({ isActive }) =>
-            `navbar-brand ${isActive ? 'active' : ''}`
+            `navbar-brand ${isActive ? "active" : ""}`
           }
         >
           Task Manager
@@ -22,8 +30,9 @@ const Navbar = () => {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span className="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon" />
         </button>
+
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
@@ -31,7 +40,7 @@ const Navbar = () => {
                 to="/"
                 end
                 className={({ isActive }) =>
-                  `nav-link ${isActive ? 'active' : ''}`
+                  `nav-link ${isActive ? "active" : ""}`
                 }
               >
                 Home
@@ -41,13 +50,30 @@ const Navbar = () => {
               <NavLink
                 to="/add-task"
                 className={({ isActive }) =>
-                  `nav-link ${isActive ? 'active' : ''}`
+                  `nav-link ${isActive ? "active" : ""}`
                 }
               >
                 Add Task
               </NavLink>
             </li>
           </ul>
+
+          <div className="form-check form-switch ms-auto">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="darkModeSwitch"
+              onChange={toggleDarkMode}
+              checked={darkMode}
+            />
+            <label
+              className="form-check-label"
+              htmlFor="darkModeSwitch"
+              style={{ cursor: "pointer" }}
+            >
+              {darkMode ? "🌙" : "🌞"}
+            </label>
+          </div>
         </div>
       </div>
     </nav>
