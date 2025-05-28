@@ -4,9 +4,11 @@ import { useTaskContext } from "./TaskProvider";
 import { TaskStatus } from "../../types/Task/types";
 import TaskFilter, { type FilterKey } from "../../components/Task/TaskFilter";
 import TaskStatusLegend from "./TaskStatusLegend";
+import { useTheme } from "../Navbar/ThemeContext";
 
 const TaskList: React.FC = () => {
-  const { tasks, setTasks } = useTaskContext();
+  const { tasks, dispatch } = useTaskContext();
+  const { darkMode } = useTheme();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const safeTasks = tasks ?? [];
@@ -59,18 +61,18 @@ const TaskList: React.FC = () => {
 
   const handleDelete = (id: string, title: string) => {
     if (confirm(`Are you sure you want to delete "${title}"?`)) {
-      setTasks((prev) => (prev ? prev.filter((task) => task.id !== id) : []));
+      dispatch({ type: "REMOVE_TASK", payload: id });
     }
   };
 
   const handleStatusChange = (taskId: string, newStatus: TaskStatus) => {
-    setTasks((prev) =>
-      prev
-        ? prev.map((task) =>
-            task.id === taskId ? { ...task, status: newStatus } : task
-          )
-        : []
-    );
+    const task = safeTasks.find((task) => task.id === taskId);
+    if (!task) return;
+
+    dispatch({
+      type: "UPDATE_TASK",
+      payload: { ...task, status: newStatus },
+    });
   };
 
   const getNoTasksMessage = () => {
@@ -90,7 +92,7 @@ const TaskList: React.FC = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className={`container mt-5 ${darkMode ? "bg-dark text-white" : ""}`}>
       <h2 className="mb-4 text-center">Task List</h2>
 
       <TaskStatusLegend />
@@ -102,13 +104,17 @@ const TaskList: React.FC = () => {
           {getNoTasksMessage()}
         </div>
       ) : (
-        <div className="card shadow-sm">
+        <div
+          className={`card shadow-sm ${darkMode ? "bg-dark text-white" : ""}`}
+        >
           <div className="card-body">
             <div className="row">
               {filteredTasks.map((task) => (
                 <div className="col-md-4 col-sm-6 mb-3" key={task.id}>
                   <div
-                    className={`card shadow-sm ${getStatusClass(task.status)}`}
+                    className={`card shadow-sm ${getStatusClass(task.status)} ${
+                      darkMode ? "bg-dark text-white" : ""
+                    }`}
                   >
                     <div className="card-body">
                       <h5 className="card-title">{task.title}</h5>
@@ -116,7 +122,9 @@ const TaskList: React.FC = () => {
 
                       <div className="mb-2">
                         <select
-                          className="form-select form-select-sm"
+                          className={`form-select form-select-sm ${
+                            darkMode ? "bg-dark text-white" : ""
+                          }`}
                           value={task.status}
                           onChange={(e) =>
                             handleStatusChange(
@@ -137,7 +145,9 @@ const TaskList: React.FC = () => {
                       <div className="d-flex justify-content-between mt-3">
                         <Link
                           to={`/edit-task/${task.id}`}
-                          className="btn btn-warning btn-sm"
+                          className={`btn btn-warning btn-sm ${
+                            darkMode ? "btn-light" : ""
+                          }`}
                         >
                           Edit
                         </Link>
