@@ -1,17 +1,17 @@
 import React, {
   createContext,
-  useState,
-  useEffect,
   useContext,
+  useReducer,
+  useEffect,
   type ReactNode,
   type Dispatch,
-  type SetStateAction,
 } from "react";
 import type { Task } from "../../types/Task/types";
+import { taskReducer, type TaskAction } from "./taskReducer";
 
-export interface TaskContextType {
-  tasks: Task[] | undefined;
-  setTasks: Dispatch<SetStateAction<Task[] | undefined>>;
+interface TaskContextType {
+  tasks: Task[];
+  dispatch: Dispatch<TaskAction>;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -23,24 +23,24 @@ interface TaskProviderProps {
   children: ReactNode;
 }
 
+const initialTasks: Task[] = [];
+
 export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
-  const [tasks, setTasks] = useState<Task[] | undefined>(undefined);
+  const [tasks, dispatch] = useReducer(taskReducer, initialTasks);
 
   useEffect(() => {
     const stored = localStorage.getItem("tasks");
     if (stored) {
-      setTasks(JSON.parse(stored));
+      dispatch({ type: "SET_TASKS", payload: JSON.parse(stored) });
     }
   }, []);
 
   useEffect(() => {
-    if (tasks) {
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-    }
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
   return (
-    <TaskContext.Provider value={{ tasks, setTasks }}>
+    <TaskContext.Provider value={{ tasks, dispatch }}>
       {children}
     </TaskContext.Provider>
   );
