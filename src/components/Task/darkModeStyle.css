@@ -1,0 +1,26 @@
+.dark-mode .form-control::placeholder,
+.dark-mode .form-select::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+  opacity: 1;
+}
+
+.dark-mode .bg-dark {
+  background-color: #343a40 !important;
+}
+
+.dark-mode .text-white {
+  color: white !important;
+}
+
+.dark-mode .border-secondary {
+  border-color: #6c757d !important;
+}
+
+.dark-mode .text-danger {
+  color: #dc3545 !important;
+}
+
+.bg-dark input::placeholder,
+.bg-dark select::placeholder {
+  color: #bbb;
+}
