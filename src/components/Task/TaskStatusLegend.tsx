@@ -1,5 +1,5 @@
 import React from "react";
-import { useTheme } from "../Navbar/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 
 const TaskStatusLegend: React.FC = () => {
   const { darkMode } = useTheme();

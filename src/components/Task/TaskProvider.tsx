@@ -14,10 +14,7 @@ interface TaskContextType {
   dispatch: Dispatch<TaskAction>;
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
-export const TaskContext = createContext<TaskContextType | undefined>(
-  undefined
-);
+const TaskContext = createContext<TaskContextType | undefined>(undefined);
 
 interface TaskProviderProps {
   children: ReactNode;

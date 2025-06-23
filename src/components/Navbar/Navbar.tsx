@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useTheme } from "./ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 
 const Navbar: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();

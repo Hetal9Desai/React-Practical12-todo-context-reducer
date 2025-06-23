@@ -1,7 +1,7 @@
 import React, { type ChangeEvent } from "react";
 import { TaskStatus } from "../../types/Task/types";
-import { useTheme } from "../Navbar/ThemeContext";
-import "/src/components/Task/darkModeStyle.css";
+import { useTheme } from "../../context/ThemeContext";
+import "../../../darkModeStyle.css";
 
 export type FilterKey = "title" | "desc" | "both" | "status";
 

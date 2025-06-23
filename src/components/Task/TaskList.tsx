@@ -4,14 +4,13 @@ import { useTaskContext } from "./TaskProvider";
 import { TaskStatus } from "../../types/Task/types";
 import TaskFilter, { type FilterKey } from "../../components/Task/TaskFilter";
 import TaskStatusLegend from "./TaskStatusLegend";
-import { useTheme } from "../Navbar/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 
 const TaskList: React.FC = () => {
   const { tasks, dispatch } = useTaskContext();
   const { darkMode } = useTheme();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const safeTasks = tasks ?? [];
+  const safeTasks = useMemo(() => tasks ?? [], [tasks]);
 
   const [filters, setFilters] = useState<Record<FilterKey, string>>({
     title: "",

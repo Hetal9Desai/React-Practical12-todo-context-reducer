@@ -6,8 +6,8 @@ import * as z from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { TaskStatus } from "../../types/Task/types";
 import { useTaskContext } from "./TaskProvider";
-import { useTheme } from "../Navbar/ThemeContext";
-import "/src/components/Task/darkModeStyle.css";
+import { useTheme } from "../../context/ThemeContext";
+import "../../../darkModeStyle.css";
 
 const taskSchema = z.object({
   id: z.string().uuid().optional().or(z.literal("")),

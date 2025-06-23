@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar/Navbar";
 import { TaskListWrapper } from "./components/Task/TaskListWrapper";
 import { AddEditTaskWrapper } from "./components/Task/AddEditTaskWrapper";
 import NotFound from "./components/NotFound/NotFound";
-import { useTheme } from "./components/Navbar/ThemeContext";
+import { useTheme } from "./context/ThemeContext";
 
 const App: React.FC = () => {
   const { darkMode } = useTheme();
