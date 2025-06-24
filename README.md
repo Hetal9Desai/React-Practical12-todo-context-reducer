@@ -1,6 +1,5 @@
-## Practical-12 context+reducer pattern for Todo app
-
 ## Task Manager App
+
 
 This is a simple and intuitive task management application built with React and TypeScript. The app allows users to manage tasks efficiently with features like task creation, editing, deletion, filtering, and status management. It uses React Context with useReducer to manage global state for tasks eliminating the need for prop drilling.
 
@@ -47,5 +46,7 @@ Technologies Used
 
     Custom Hook (useTheme) for theme management
 
+
 Deploy Link:
 https://inquisitive-dusk-fba153.netlify.app/
+
